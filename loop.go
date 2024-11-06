@@ -6,7 +6,16 @@ import (
 	"os"
 )
 
+type config struct {
+	prev string
+	next string
+}
+
 func startLoop() {
+	basicConfig := config{
+		prev: "next test",
+		next: "next test",
+	}
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Welcome to the Pokedex!")
 	for {
@@ -21,28 +30,6 @@ func startLoop() {
 			continue
 		}
 
-		command.command()
-	}
-}
-
-type cliCommand struct {
-	name    string
-	desc    string
-	command func() error
-}
-
-func getCommands() map[string]cliCommand {
-	return map[string]cliCommand{
-		"help": {
-			name:    "help",
-			desc:    "Displays all of the available commands and their descriptions.",
-			command: commandHelp,
-		},
-
-		"exit": {
-			name:    "exit",
-			desc:    "Exits the Pokedex",
-			command: commandExit,
-		},
+		command.command(&basicConfig)
 	}
 }
