@@ -12,7 +12,17 @@ type cliCommand struct {
 }
 
 func commandHelp(config *config) error {
-	fmt.Println("Help text here...")
+	commands := getCommands()
+
+	for _, v := range commands {
+		fmt.Printf(`
+Name: %s
+
+Description: %s
+
+--------------
+`, v.name, v.desc)
+	}
 	return nil
 }
 
