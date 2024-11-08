@@ -3,15 +3,17 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/sam-maton/go-pokedex/internal/pokeapi"
 )
 
-type cliCommand struct {
+type CLICommand struct {
 	name    string
 	desc    string
-	command func(config *config) error
+	command func(config *Config) error
 }
 
-func commandHelp(config *config) error {
+func commandHelp(config *Config) error {
 	commands := getCommands()
 
 	for _, v := range commands {
@@ -26,22 +28,28 @@ Description: %s
 	return nil
 }
 
-func commandExit(config *config) error {
+func commandExit(config *Config) error {
 	os.Exit(0)
 
 	return nil
 }
 
-func commandMap(config *config) error {
+func commandMap(config *Config) error {
+	results, err := pokeapi.GetAreas(config.API)
+
+	for _, r := range results.Results {
+		fmt.Println(r.Name)
+	}
+
+	return err
+}
+
+func commandMapB(config *Config) error {
 	return nil
 }
 
-func commandMapB(config *config) error {
-	return nil
-}
-
-func getCommands() map[string]cliCommand {
-	return map[string]cliCommand{
+func getCommands() map[string]CLICommand {
+	return map[string]CLICommand{
 		"help": {
 			name:    "help",
 			desc:    "Displays all of the available commands and their descriptions.",

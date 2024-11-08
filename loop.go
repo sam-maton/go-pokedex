@@ -4,17 +4,22 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"time"
+
+	"github.com/sam-maton/go-pokedex/internal/pokeapi"
 )
 
-type config struct {
-	prev string
-	next string
+type Config struct {
+	Prev string
+	Next string
+	API  pokeapi.PokeApi
 }
 
 func startLoop() {
-	basicConfig := config{
-		prev: "next test",
-		next: "next test",
+	basicConfig := Config{
+		Prev: "",
+		Next: "https://pokeapi.co/api/v2/location-area",
+		API:  pokeapi.NewClient(5 * time.Second),
 	}
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Welcome to the Pokedex!")
@@ -30,6 +35,10 @@ func startLoop() {
 			continue
 		}
 
-		command.command(&basicConfig)
+		err := command.command(&basicConfig)
+
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 }
