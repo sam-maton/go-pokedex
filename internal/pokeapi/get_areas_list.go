@@ -5,8 +5,15 @@ import (
 	"net/http"
 )
 
-func GetAreas(pokiApi PokeApi) (APIResult, error) {
-	resp, err := http.Get(baseURL + "/location-area")
+func (p *PokeApi) GetAreas(pageURL *string) (APIResult, error) {
+
+	url := baseURL + "/location-area"
+
+	if pageURL != nil {
+		url = *pageURL
+	}
+
+	resp, err := http.Get(url)
 	if err != nil {
 		return APIResult{}, err
 	}

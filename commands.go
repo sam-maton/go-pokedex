@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-
-	"github.com/sam-maton/go-pokedex/internal/pokeapi"
 )
 
 type CLICommand struct {
@@ -35,11 +33,14 @@ func commandExit(config *Config) error {
 }
 
 func commandMap(config *Config) error {
-	results, err := pokeapi.GetAreas(config.API)
+	results, err := config.API.GetAreas(config.Next)
 
 	for _, r := range results.Results {
 		fmt.Println(r.Name)
 	}
+
+	config.Prev = results.Previous
+	config.Next = results.Next
 
 	return err
 }
