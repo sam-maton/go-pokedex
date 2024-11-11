@@ -33,20 +33,26 @@ func commandExit(config *Config) error {
 }
 
 func commandMap(config *Config) error {
-	results, err := config.API.GetAreas(config.Next)
+	results, err := config.API.GetAreas(config.locationNext)
 
 	for _, r := range results.Results {
 		fmt.Println(r.Name)
 	}
 
-	config.Prev = results.Previous
-	config.Next = results.Next
+	config.locationPrev = results.Previous
+	config.locationNext = results.Next
 
 	return err
 }
 
 func commandMapB(config *Config) error {
-	return nil
+	results, err := config.API.GetAreas(config.locationPrev)
+	for _, r := range results.Results {
+		fmt.Println(r.Name)
+	}
+	config.locationPrev = results.Previous
+	config.locationNext = results.Next
+	return err
 }
 
 func getCommands() map[string]CLICommand {

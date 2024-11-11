@@ -10,9 +10,9 @@ import (
 )
 
 type Config struct {
-	Prev *string
-	Next *string
-	API  pokeapi.PokeApi
+	locationPrev *string
+	locationNext *string
+	API          pokeapi.PokeApi
 }
 
 func startLoop() {
