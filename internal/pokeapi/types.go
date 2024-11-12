@@ -17,3 +17,8 @@ type AreaPokemonResult struct {
 		} `json:"pokemon"`
 	} `json:"pokemon_encounters"`
 }
+
+type PokemonResult struct {
+	Name       string `json:"name"`
+	Experience int    `json:"base_experience"`
+}
