@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (p *PokeApi) GetAreas(pageURL *string) (APIResult, error) {
+func (p *PokeApi) GetAreas(pageURL *string) (AreaResult, error) {
 
 	url := baseURL + "/location-area"
 
@@ -15,24 +15,24 @@ func (p *PokeApi) GetAreas(pageURL *string) (APIResult, error) {
 	}
 
 	if val, ok := p.cache.Get(url); ok {
-		apiResult := APIResult{}
+		apiResult := AreaResult{}
 		json.Unmarshal(val, &apiResult)
 		return apiResult, nil
 	}
 
 	resp, err := http.Get(url)
 	if err != nil {
-		return APIResult{}, err
+		return AreaResult{}, err
 	}
 
 	defer resp.Body.Close()
 
-	var apiResult APIResult
+	var apiResult AreaResult
 
 	data, err := io.ReadAll(resp.Body)
 
 	if err != nil {
-		return APIResult{}, err
+		return AreaResult{}, err
 	}
 
 	json.Unmarshal(data, &apiResult)

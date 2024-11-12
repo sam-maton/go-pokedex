@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/sam-maton/go-pokedex/internal/pokeapi"
@@ -13,6 +14,7 @@ type Config struct {
 	locationPrev *string
 	locationNext *string
 	API          pokeapi.PokeApi
+	args         []string
 }
 
 func startLoop() {
@@ -21,22 +23,35 @@ func startLoop() {
 	}
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Welcome to the Pokedex!")
+
+	//User input loop
 	for {
 		fmt.Print("Pokedex > ")
 		if !scanner.Scan() {
 			break
 		}
-		command, exists := getCommands()[scanner.Text()]
+		command := splitCommand(scanner.Text())
+		basicConfig.args = command
+		commandFunc, exists := getCommands()[command[0]]
 
-		if !exists {
-			fmt.Println("Command does not exist.")
+		if commandFunc.args != len(command[1:]) {
+			fmt.Printf("%s requires %d args \n", commandFunc.name, commandFunc.args)
 			continue
 		}
 
-		err := command.command(basicConfig)
+		if !exists {
+			fmt.Println("Command does not exist: " + scanner.Text())
+			continue
+		}
+
+		err := commandFunc.command(basicConfig)
 
 		if err != nil {
 			fmt.Println(err)
 		}
 	}
+}
+
+func splitCommand(command string) []string {
+	return strings.Split(command, " ")
 }

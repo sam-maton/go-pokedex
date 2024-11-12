@@ -1,7 +1,6 @@
 package pokecache
 
 import (
-	"fmt"
 	"sync"
 	"time"
 )
@@ -48,8 +47,6 @@ func (c *Cache) reap(now time.Time, last time.Duration) {
 			delete(c.Entries, k)
 		}
 	}
-
-	fmt.Print(c.Entries)
 }
 
 func NewCache(interval time.Duration) Cache {
