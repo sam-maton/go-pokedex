@@ -19,6 +19,6 @@ func NewClient(timeout time.Duration) PokeApi {
 		httpClient: http.Client{
 			Timeout: timeout,
 		},
-		cache: pokecache.NewCache(10),
+		cache: pokecache.NewCache(10 * time.Second),
 	}
 }
