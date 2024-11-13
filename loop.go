@@ -12,7 +12,8 @@ import (
 
 func startLoop() {
 	basicConfig := &Config{
-		API: pokeapi.NewClient(5 * time.Second),
+		API:     pokeapi.NewClient(5 * time.Second),
+		pokemon: make(map[string]pokeapi.PokemonResult),
 	}
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Welcome to the Pokedex!")

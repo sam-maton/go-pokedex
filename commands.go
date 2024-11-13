@@ -91,6 +91,30 @@ func commandCatch(config *Config) error {
 	}
 
 	fmt.Println(result.Name + " was caught!")
+	config.pokemon[result.Name] = result
+
+	return nil
+}
+
+func commandInspect(config *Config) error {
+	if val, ok := config.pokemon[config.args[1]]; ok {
+		fmt.Printf(`
+Name: %s
+Height: %d
+Weight: %d
+		`, val.Name, val.Height, val.Weight)
+
+		return nil
+	}
+
+	return errors.New("pokemon is not in Pokedex")
+}
+
+func commandPokedex(config *Config) error {
+	fmt.Println("Your Pokedex:")
+	for _, v := range config.pokemon {
+		fmt.Println("- " + v.Name)
+	}
 
 	return nil
 }
@@ -132,6 +156,18 @@ func getCommands() map[string]CLICommand {
 			desc:    "Try and catch a Pokemon",
 			command: commandCatch,
 			args:    1,
+		},
+		"inspect": {
+			name:    "inspect",
+			desc:    "Inspect a caught Pokemon",
+			command: commandInspect,
+			args:    1,
+		},
+		"pokedex": {
+			name:    "pokedex",
+			desc:    "Lists all the Pokemon in the Pokedex",
+			command: commandPokedex,
+			args:    0,
 		},
 	}
 }

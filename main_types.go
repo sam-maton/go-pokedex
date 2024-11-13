@@ -7,6 +7,7 @@ type Config struct {
 	locationNext *string
 	API          pokeapi.PokeApi
 	args         []string
+	pokemon      map[string]pokeapi.PokemonResult
 }
 
 type CLICommand struct {

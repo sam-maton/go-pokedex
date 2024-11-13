@@ -21,4 +21,11 @@ type AreaPokemonResult struct {
 type PokemonResult struct {
 	Name       string `json:"name"`
 	Experience int    `json:"base_experience"`
+	Height     int    `json:"height"`
+	Weight     int    `json:"type"`
+	Types      []struct {
+		Type struct {
+			Name string `json:"name"`
+		} `json:"type"`
+	} `json:"types"`
 }
