@@ -1,19 +1,14 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"math/rand"
 	"os"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
-
-type CLICommand struct {
-	name    string
-	desc    string
-	command func(config *Config) error
-	args    int
-}
 
 func commandHelp(config *Config) error {
 	commands := getCommands()
@@ -77,6 +72,29 @@ func commandExplore(config *Config) error {
 	return nil
 }
 
+func commandCatch(config *Config) error {
+	result, err := config.API.GetPokemon(config.args[1])
+
+	if err != nil {
+		return err
+	}
+
+	if result.Experience == 0 && result.Name == "" {
+		return errors.New("pokemon could not be found")
+	}
+	fmt.Println("Throwing a Pokeball at " + result.Name + "...")
+
+	caught := rand.Intn(result.Experience)
+	if caught > 50 {
+		fmt.Println(result.Name + " escaped!")
+		return nil
+	}
+
+	fmt.Println(result.Name + " was caught!")
+
+	return nil
+}
+
 func getCommands() map[string]CLICommand {
 	return map[string]CLICommand{
 		"help": {
@@ -107,6 +125,12 @@ func getCommands() map[string]CLICommand {
 			name:    "explore",
 			desc:    "Searches an area for Pokemon",
 			command: commandExplore,
+			args:    1,
+		},
+		"catch": {
+			name:    "catch",
+			desc:    "Try and catch a Pokemon",
+			command: commandCatch,
 			args:    1,
 		},
 	}

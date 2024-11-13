@@ -10,13 +10,6 @@ import (
 	"github.com/sam-maton/go-pokedex/internal/pokeapi"
 )
 
-type Config struct {
-	locationPrev *string
-	locationNext *string
-	API          pokeapi.PokeApi
-	args         []string
-}
-
 func startLoop() {
 	basicConfig := &Config{
 		API: pokeapi.NewClient(5 * time.Second),
